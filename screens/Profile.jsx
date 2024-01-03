@@ -1,12 +1,54 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Profile = ({navigation}) => {
   const [userData, setUserData] = useState(null)
   const [userLogin, setUserLogin] = useState(false)
+
+  useEffect(() => {
+    checkExistingUser();
+  }, [])
+
+  const checkExistingUser = async () => {
+    const id = await AsyncStorage.getItem('id')
+    const useId = `users${JSON.parse(id)}`;
+ 
+    try {
+      const currentUser = await AsyncStorage.getItem(useId);
+
+      if (currentUser !== null) {
+        const parsedData = JSON.parse(currentUser)
+        setUserData(parsedData)
+        setUserLogin(true)
+      } else {
+        navigation.navigate('Login')
+      }
+
+
+    } catch (error) {
+      console.log('error retrieving the data:', error)
+
+    }
+
+  }
+
+
+  const userLogout = async () => {
+    const id = await AsyncStorage.getItem('id')
+    const useId = `user${JSON.parse(id)}`;
+
+    try {
+      await AsyncStorage.multiRemove([useId, 'id']);
+navigation.replace('Bottom Navigation')
+    } catch {
+console.log('error Logging out user', error)
+    }
+  }
+
 
   const logout = () => {
     Alert.alert(
@@ -18,9 +60,9 @@ const Profile = ({navigation}) => {
         },
 
         {
-          text: "Continue", onPress: () => console.log("Logout pressed")
+          text: "Continue", onPress: () => userLogout()
         },
-        {defaultIndex : 1}
+        // {defaultIndex : 1}
       ]
     )
   }

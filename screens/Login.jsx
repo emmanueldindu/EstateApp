@@ -43,11 +43,37 @@ const Login = ({ navigation }) => {
       if (response.status === 200) {
         setLoader(false)
         console.log(response.data)
-        setResponseData(response.data)
-        console.log(`users${responseData._id}`);
-        await AsyncStorage.setItem(`users${responseData._id}`)
+
+
+        // setResponseData(response.data)
+        // console.log(`users${responseData._id}`);
+        if (response.data && response.data._id) {
+          await AsyncStorage.setItem(
+            `users${response.data._id}`,
+            JSON.stringify(response.data),
+            console.log(`users${response.data._id}`)
+          );
+
+
+          await AsyncStorage.setItem('id', JSON.stringify(response.data._id))
+          navigation.replace('Bottom Navigation')
+       
+
+        } else {
+          console.error('Invalid response data', response.data)
+        }
+
+
+
+        // await AsyncStorage.setItem(
+        //   `users${responseData._id}`,
+        //   JSON.stringify(responseData)
+        // )
+       
+      
+
       } else {
-        Alert.alert("Error Lohgging in", {error}, [
+        Alert.alert("Error Logging in", {error}, [
           {
             text: "Cancel",
             onPress: () => console.log("cancel pressed"),
@@ -62,7 +88,9 @@ const Login = ({ navigation }) => {
       }
 
     } catch (error) {
-      Alert.alert("Error", "Error Logging in, try again with correct credentials", [
+      console.error('Login Error', error)
+
+      Alert.alert("Error", `Error Logging in: ${error.message}`, [
         {
           text: "Cancel",
           onPress: () => console.log("cancel pressed"),
