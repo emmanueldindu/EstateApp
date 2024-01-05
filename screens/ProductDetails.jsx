@@ -1,17 +1,18 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRoute } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import { ScrollView } from 'react-native-gesture-handler'
 import AddToCart from '../Hooks/AddtoCart';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProductDetails = ({ navigation }) => {
     const route = useRoute();
     const { item } = route.params
     const [count, setCount] = useState(1)
-
+    const [isLoggedIn, setIsLoggedin] = useState(false)
     const increment = () => {
         setCount(count + 1);
     }
@@ -19,6 +20,32 @@ const ProductDetails = ({ navigation }) => {
     const decrement = () => {
         if (count > 1) {
             setCount(count - 1);
+        }
+    }
+
+    useEffect(() => {
+checkUser()
+    }, [])
+    const checkUser = async () => {
+        try {
+            const id = await AsyncStorage.getItem('id');
+            if (id !== null) {
+                setIsLoggedin((prevIsLoggedIn) => {
+                  console.log(prevIsLoggedIn); // Log the previous state
+                  return true;
+                });
+                console.log('user logged in');
+            } else {
+                console.log('user not logged in')
+            }
+        } catch (error) {
+
+        }
+    }
+
+    const handlePres = () => {
+        if (isLoggedIn) {
+            navigation.navigate('Login')
         }
     }
 
@@ -31,7 +58,7 @@ const ProductDetails = ({ navigation }) => {
                       <Ionicons name='chevron-back-circle' size={30} />
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <TouchableOpacity onPress={isLoggedIn === true ? () => {} : navigation.navigate('Login')}>
                       <Ionicons name='heart' color={'#6CB2EB'} size={30} />
                   </TouchableOpacity>
                   
@@ -115,13 +142,15 @@ const ProductDetails = ({ navigation }) => {
           </View>
 
                 <View className="flex pl-4 pr-4  pb-2 flex-row justify-between bg-white">
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={isLoggedIn === true ? () => {} : navigation.navigate('Login')}
+                        >
                     <View className="bg-black h-[40px] items-center w-[220px] rounded-2xl ">
                         <Text className="text-[#fff] font-bold text-md p-2"> Book Now</Text>
                         </View>
                     </TouchableOpacity>
                     
-                    <TouchableOpacity onPress={() =>AddToCart(item._id, count)} className="w-[40px] justify-center items-center   h-[40px] bg-black rounded-full">
+                    <TouchableOpacity onPress={isLoggedIn === true ? () => AddToCart(item._id, count) : navigation.navigate('Login')} className="w-[40px] justify-center items-center   h-[40px] bg-black rounded-full">
                         <Ionicons name='cart-outline' color={'white'} size={22} />
                     </TouchableOpacity>
                     
