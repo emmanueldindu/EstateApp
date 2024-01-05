@@ -1,15 +1,26 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRoute } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import { ScrollView } from 'react-native-gesture-handler'
+import AddToCart from '../Hooks/AddtoCart';
 
-const ProductDetails = ({ navigation, route }) => {
-    // const route = useRoute();
+const ProductDetails = ({ navigation }) => {
+    const route = useRoute();
     const { item } = route.params
-    console.log()
+    const [count, setCount] = useState(1)
+
+    const increment = () => {
+        setCount(count + 1);
+    }
+
+    const decrement = () => {
+        if (count > 1) {
+            setCount(count - 1);
+        }
+    }
 
     return (
       <SafeAreaView>
@@ -110,7 +121,7 @@ const ProductDetails = ({ navigation, route }) => {
                         </View>
                     </TouchableOpacity>
                     
-                    <TouchableOpacity className="w-[40px] justify-center items-center   h-[40px] bg-black rounded-full">
+                    <TouchableOpacity onPress={() =>AddToCart(item._id, count)} className="w-[40px] justify-center items-center   h-[40px] bg-black rounded-full">
                         <Ionicons name='cart-outline' color={'white'} size={22} />
                     </TouchableOpacity>
                     

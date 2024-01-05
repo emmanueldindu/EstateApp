@@ -56,6 +56,8 @@ const Login = ({ navigation }) => {
 
 
           await AsyncStorage.setItem('id', JSON.stringify(response.data._id))
+          await AsyncStorage.setItem('token', JSON.stringify(response.data.token))
+
           navigation.replace('Bottom Navigation')
        
 

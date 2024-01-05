@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-
+import axios from 'axios'
 
 const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 const Register = ({ navigation }) => {
     
 
-    const [loader, SetLoader] = useState(true);
+    const [loader, SetLoader] = useState(false);
     const [responseData, setResponseData] = useState(null);
     const [secure, setSecure] = useState(false);
 
@@ -47,6 +47,26 @@ const Register = ({ navigation }) => {
     )
   }
 
+
+  const registerUser = async (values) => {
+    SetLoader(true)
+    try {
+      const apiUrl = 'https://estateapi.onrender.com/api/register'
+      const data = values
+
+      const response = await axios.post(apiUrl, data);
+
+      if (response.status === 201) {
+        navigation.replace('Login')
+      }
+      
+      
+    } catch {
+      console.log(error)
+    }
+    
+  }
+
   return (
     <ScrollView>
     <SafeAreaView>
@@ -63,7 +83,7 @@ const Register = ({ navigation }) => {
         <Formik
           initialValues={{ email: "", password: "", username: "", location: "" }}
             validationSchema={validationSchema}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={(values) => registerUser(values)}
         >
           {({
             handleChange,
@@ -194,7 +214,7 @@ const Register = ({ navigation }) => {
                   <Text className="text-red-500 mt-2 font-bold text-xs" >{ errors.location}</Text>
                 )}
               </View>
-              <Button title={"S I G N U P"} onPress={isValid ? handleSubmit : invalid} isValid={isValid} />
+              <Button title={"S I G N U P"} onPress={isValid ? handleSubmit : invalid} isValid={isValid} loader={loader} />
             {/* <Text className="text-center mt-4 font-bold" onPress={()=> {navigation.navigate('Register')}}>Register</Text> */}
               </View>
           )}
