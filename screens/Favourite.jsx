@@ -1,7 +1,13 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-export default function Favourite() {
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
+import { useRoute } from "@react-navigation/native";
+
+
+const Favourite = ({navigation}) => {
 
   const [favorites, setFavorites] = useState();
   const [favData, setFavData] = useState([]);
@@ -25,12 +31,7 @@ checkFavorites()
 
           console.log(favList.length)
 
-            // if (favorites[item._id]) {
-            //     console.log(item._id);
 
-            //     setFavorites(true);
-            // }
-            // setFavorites(true)
         }
     } catch (error) {
         console.log(error)
@@ -39,10 +40,10 @@ checkFavorites()
 
   
     
-const deleteFavorites = async () => {
+const deleteFavorites = async (product) => {
   const id = await AsyncStorage.getItem('id');
   const favoritesId = `favorites${JSON.parse(id)}`
-  let productId = id;
+  let productId = product;
   
 
   try {
@@ -52,7 +53,7 @@ const deleteFavorites = async () => {
       if (favoritesObj[productId]) {
           delete favoritesObj[productId];
 
-         checkFavorites()
+     navigation.goBack()
         //  setFavorites(false)
       } 
 
@@ -60,17 +61,43 @@ const deleteFavorites = async () => {
   } catch (error) {
       console.log(error)
   }
- //  console.log(favoritesId)
- //  console.log(productId)
 
-
-
-
- //  console.log(productObj)
 };
   return (
-    <View>
-      <Text>Favourite</Text>
-    </View>
+    <SafeAreaView className='mt-4 mx-3'>
+      <View className="flex-row items-center w-full  justify-start mb-5">
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons
+            name='chevron-back-circle'
+            size={30}
+          />
+          </TouchableOpacity>
+        <Text className='font-black text-xl tracking-[6px]'>
+          Favorites
+        </Text>
+        
+
+      </View>
+
+      <FlatList 
+        data={favData}
+        renderItem={({ item }) => (<View  className="flex-1 flex-row justify-between items-center p-4 mb-3  rounded-md shadow-xl bg-white shadow-slate-300 ">
+          <View className='w-[70px] justify-center items-center rounded-lg'>
+            <Image source={{uri: item.imageUrl}} className='w-[70px] h-[70px] rounded-lg'/>
+          </View>
+          
+
+          <View className='flex-1 mx-3 '>
+            <Text className="font-black text-xs">{item.title}</Text>
+            <Text className="font-black text-xs">{item.supplier}</Text>
+            <Text className="font-black text-xs">{ item.price}</Text>
+          </View>
+        </View>)}
+        keyExtractor={(item, index) => index.toString()}
+      
+      />
+  </SafeAreaView>
   )
 }
+
+export default Favourite
