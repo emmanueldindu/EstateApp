@@ -6,13 +6,15 @@ import MapView, { Marker } from "react-native-maps";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import AddToCart from "../Hooks/AddtoCart";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProductDetails = ({ navigation }) => {
   const route = useRoute();
   const { item } = route.params;
   const [count, setCount] = useState(1);
-  const [isLoggedIn, setIsLoggedin] = useState(false);
+    const [isLoggedIn, setIsLoggedin] = useState(false);
+    const [favorites, setFavorites] = useState(false);
   const increment = () => {
     setCount(count + 1);
   };
@@ -24,7 +26,8 @@ const ProductDetails = ({ navigation }) => {
   };
 
   useEffect(() => {
-    checkUser();
+      checkUser();
+      checkFavorites();
   }, []);
   const checkUser = async () => {
     try {
@@ -56,13 +59,33 @@ const ProductDetails = ({ navigation }) => {
              location: item.location
            
          };
-         console.log(favoritesId)
-         console.log(productId)
+
+         try {
+             const existingItem = await AsyncStorage.getItem(favoritesId)
+             let favoritesObj = existingItem ? JSON.parse(existingItem) : {};
+
+             if (favoritesObj[productId]) {
+                 delete favoritesObj[productId];
+
+                 console.log('deleted')
+                setFavorites(false)
+             } else {
+                 favoritesObj[productId] = productObj;
+                 console.log('added to fav')
+                 setFavorites(true)
+             }
+
+             await AsyncStorage.setItem(favoritesId, JSON.stringify(favoritesObj))
+         } catch (error) {
+             console.log(error)
+         }
+        //  console.log(favoritesId)
+        //  console.log(productId)
 
        
 
 
-         console.log(productObj)
+        //  console.log(productObj)
     };
 
      const handlePress = () => {
@@ -70,7 +93,7 @@ const ProductDetails = ({ navigation }) => {
       navigation.navigate("Login");
     } else {
         
-        console.log("added to favorites");
+
         addToFavorites();
 
     }
@@ -92,6 +115,31 @@ const ProductDetails = ({ navigation }) => {
     }
   };
 
+
+    const checkFavorites = async () => {
+        const id = await AsyncStorage.getItem('id');
+        const favoritesId = `favorites${JSON.parse(id)}`
+
+        console.log(favoritesId)
+  
+        try {
+            const favoritesObj = await AsyncStorage.getItem(favoritesId);
+
+            if (favoritesId !== null) {
+                const favorites = JSON.parse(favoritesObj);
+
+                if (favorites[item._id]) {
+                    console.log(item._id);
+
+                    setFavorites(true);
+                }
+                // setFavorites(true)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
    
   return (
     <SafeAreaView>
@@ -106,7 +154,7 @@ const ProductDetails = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handlePress()}>
-              <Ionicons name="heart" color={"#6CB2EB"} size={30} />
+              <Ionicons name={favorites ? 'heart' : 'heart-outline'} color={"#6CB2EB"} size={30} />
             </TouchableOpacity>
           </View>
           <Image
