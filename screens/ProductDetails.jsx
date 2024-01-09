@@ -103,7 +103,7 @@ const ProductDetails = ({ navigation }) => {
       navigation.navigate("Login");
     } else {
         console.log("pressed");
-        AddToCart(item._id, count)
+        // AddToCart(item._id, count)
     }
   };
 
@@ -111,7 +111,14 @@ const ProductDetails = ({ navigation }) => {
     if (isLoggedIn === false) {
       navigation.navigate("Login");
     } else {
-      console.log("add to cart");
+        // console.log("add to cart");
+        AddToCart(item._id, count);
+        console.log('Item added to cart');
+    // Trigger refetch after adding to the cart
+
+    console.log('Cart data refetched');
+
+        
     }
   };
 

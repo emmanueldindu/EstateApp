@@ -1,16 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 const fetchCart = async() => {
 
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoader] = useState(false)
     const [error, setError] = useState(null);
 
 
 
-    const fetchData = async () => {
+    const fetchData = async (setDataCallback) => {
         setLoader(true);
 
         const token = await AsyncStorage.getItem('token');
@@ -25,14 +26,21 @@ const fetchCart = async() => {
             };
 
             const response = await axios.get(apiUrl, { headers });
-            const newData = JSON.stringify(response.data);
-            const parsedData = JSON.parse(newData);
-            const products = parsedData[0].products
-            await AsyncStorage.setItem('cartCount', JSON.stringify(products.length))
+            console.log('cart data responses:', response.data)
+           
+            
 
-            setData(products)
+
+                const cartData = response.data[0]; // Assuming the cart data is in the first element
+        const cartProducts = cartData.products || [];
+
+        console.log('Products:', cartProducts);
+
+        setData(cartProducts);
+
             setLoader(false);
         } catch (error) {
+            console.log('error fetching cart data:', error)
             setError(error)
         } finally {
             setLoader(false);
@@ -41,7 +49,7 @@ const fetchCart = async() => {
 
 
     useEffect(() => {
-    fetchData()
+    fetchData(setData)
 }, [])
 
     const refetch = () => {

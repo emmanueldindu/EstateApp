@@ -2,12 +2,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios from 'axios'
 
 const AddToCart = async(productId, quantity) => {
-
+    console.log('Adding to cart:', productId, 'Quantity:', quantity);
     try{
 
         const token = await AsyncStorage.getItem('token');
         const apiUrl = 'https://estateapi.onrender.com/api/cart';
-        console.log(token);
+       
         const data = {
             cartItem: productId,
             quantity: quantity

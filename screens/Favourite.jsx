@@ -1,9 +1,9 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
+import { FlatList,  } from 'react-native-gesture-handler';
+import { Ionicons, SimpleLineIcons } from '@expo/vector-icons';
 import { useRoute } from "@react-navigation/native";
 
 
@@ -52,9 +52,8 @@ const deleteFavorites = async (product) => {
 
       if (favoritesObj[productId]) {
           delete favoritesObj[productId];
-
-     navigation.goBack()
-        //  setFavorites(false)
+        checkFavorites();
+    
       } 
 
       await AsyncStorage.setItem(favoritesId, JSON.stringify(favoritesObj))
@@ -64,8 +63,9 @@ const deleteFavorites = async (product) => {
 
 };
   return (
+    <View className='relative'>
     <SafeAreaView className='mt-4 mx-3'>
-      <View className="flex-row items-center w-full  justify-start mb-5">
+      <View className="flex-row items-center w-full fixed justify-start mb-5">
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons
             name='chevron-back-circle'
@@ -86,17 +86,28 @@ const deleteFavorites = async (product) => {
             <Image source={{uri: item.imageUrl}} className='w-[70px] h-[70px] rounded-lg'/>
           </View>
           
-
           <View className='flex-1 mx-3 '>
-            <Text className="font-black text-xs">{item.title}</Text>
-            <Text className="font-black text-xs">{item.supplier}</Text>
-            <Text className="font-black text-xs">{ item.price}</Text>
+            <Text className="font-bold text-sm text-[#6CB2EB]">{item.title}</Text>
+            <Text className="font-bold text-xs text-gray-600">{item.supplier}</Text>
+            <Text className="font-black text-xs text-gray-500">$ { item.price}</Text>
           </View>
+
+            <Ionicons
+            onPress={() => deleteFavorites(item.id)}  
+              name='trash'
+              size={18}
+              color={'red'}
+            />
+
+          
+
+
         </View>)}
         keyExtractor={(item, index) => index.toString()}
       
       />
-  </SafeAreaView>
+      </SafeAreaView>
+      </View>
   )
 }
 
