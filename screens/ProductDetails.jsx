@@ -67,7 +67,7 @@ const ProductDetails = ({ navigation }) => {
              if (favoritesObj[productId]) {
                  delete favoritesObj[productId];
 
-                 console.log('deleted')
+                 console.log('deleted') 
                 setFavorites(false)
              } else {
                  favoritesObj[productId] = productObj;
@@ -80,7 +80,7 @@ const ProductDetails = ({ navigation }) => {
              console.log(error)
          }
         //  console.log(favoritesId)
-        //  console.log(productId)
+        //  console.log(productId)  
 
        
 

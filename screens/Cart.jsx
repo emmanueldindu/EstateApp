@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ActivityIndicator,   } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
@@ -7,17 +7,10 @@ import fetchCart from '../Hooks/fetchCart'
 const Cart = ({ navigation}) => {
 
   const { data, loading, error, refetch } = fetchCart();
-  console.log('Cart component data:', data);
+  useEffect(() => {
+    console.log('Cart component data:', data);
+  }, [data])
 
-//   if (loading) {
-//     console.log('Loading...');
-//     return <ActivityIndicator />;
-// }
-
-// if (!data || data.length === 0 || !data[0].products || data[0].products.length === 0) {
-//     console.log('No data available.');
-//     return <Text>No data available.</Text>;
-// }
 
 console.log('Rendering flat list...');
   return (

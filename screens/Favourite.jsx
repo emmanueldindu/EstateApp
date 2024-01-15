@@ -9,6 +9,8 @@ import { useRoute } from "@react-navigation/native";
 
 const Favourite = ({navigation}) => {
 
+  
+
   const [favorites, setFavorites] = useState();
   const [favData, setFavData] = useState([]);
   useEffect(() => {

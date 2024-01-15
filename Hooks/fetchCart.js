@@ -11,7 +11,7 @@ const fetchCart = async() => {
 
 
 
-    const fetchData = async (setDataCallback) => {
+    const fetchData = async () => {
         setLoader(true);
 
         const token = await AsyncStorage.getItem('token');
@@ -58,7 +58,8 @@ const fetchCart = async() => {
 }
 
 
-    return {data, loading, error, refetch}
+console.log('passed data', data); 
+    return { data, loading, error, refetch }
 }
 
 
