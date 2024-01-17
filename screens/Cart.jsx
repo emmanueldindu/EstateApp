@@ -4,15 +4,32 @@ import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import fetchCart from '../Hooks/fetchCart'
+import { useCartProducts } from '../Hooks/fetchCart'
 const Cart = ({ navigation}) => {
 
-  const { data, loading, error, refetch } = fetchCart();
+
+  const cartProducts = useCartProducts();
+  // const {loading, error, refetch, data } = fetchCart();
+  // console.log('Cart component data2:', data);
+ 
+  // useEffect(() => {
+  //   // Check if data is available and loading is false before logging
+  //   if (!loading && data) {
+  //     console.log('Cart component data:', data);
+  //   }
+  
+  //   // Handle error if there is one
+  //   if (error) {
+  //     console.error('Error fetching cart data:', error);
+  //   }
+  // }, [data, loading, error]);
+
   useEffect(() => {
-    console.log('Cart component data:', data);
-  }, [data])
+    if (cartProducts && cartProducts.length > 0) {
+      console.log('Cart component products:', cartProducts);
+    }
+  }, [cartProducts])
 
-
-console.log('Rendering flat list...');
   return (
 
     <SafeAreaView className='mt-4 mx-3'>
@@ -30,7 +47,7 @@ console.log('Rendering flat list...');
 
       </View>
       
-      {loading ? (
+      {/* {loading ? (
                 <ActivityIndicator />
             ) : data && data[0] && data[0].products ? (
                 <FlatList 
@@ -40,13 +57,13 @@ console.log('Rendering flat list...');
                         <View>
                             <Text>{item.cartItem.title}</Text>
                             <Text>Quantity: {item.quantity}</Text>
-                            {/* Add more details if needed */}
+                    
                         </View>
                     )}
                 />
             ) : (
                 <Text>No data available.</Text>
-            )}
+            )} */}
  
       </SafeAreaView>
 

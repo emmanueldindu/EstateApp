@@ -14,10 +14,10 @@ const fetchCart = async() => {
     const fetchData = async () => {
         setLoader(true);
 
-        const token = await AsyncStorage.getItem('token');
-
+        
         try{
-
+            
+            const token = await AsyncStorage.getItem('token');
             const apiUrl = 'https://estateapi.onrender.com/api/cart/find'
 
             const headers = {
@@ -42,6 +42,7 @@ const fetchCart = async() => {
         } catch (error) {
             console.log('error fetching cart data:', error)
             setError(error)
+            setLoader(false)
         } finally {
             setLoader(false);
         }
@@ -49,7 +50,8 @@ const fetchCart = async() => {
 
 
     useEffect(() => {
-    fetchData(setData)
+        fetchData()
+   
 }, [])
 
     const refetch = () => {
@@ -58,10 +60,14 @@ const fetchCart = async() => {
 }
 
 
-console.log('passed data', data); 
+// console.log('passed data', data); 
     return { data, loading, error, refetch }
 }
 
 
+export const useCartProducts = () => {
+    const { data } = fetchCart()
+    return data;
+}
 
 export default fetchCart
