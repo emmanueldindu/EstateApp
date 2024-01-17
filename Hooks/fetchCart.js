@@ -65,9 +65,6 @@ const fetchCart = async() => {
 }
 
 
-export const useCartProducts = () => {
-    const { data } = fetchCart()
-    return data;
-}
+
 
 export default fetchCart
