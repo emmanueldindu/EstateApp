@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons'
 // import fetchCart from '../Hooks/fetchCart'
 import axios from 'axios'
+import CartTile from './CartTile';
 
 
 
@@ -69,7 +70,9 @@ const refetch = () => {
 
 
 
- 
+ const [selected, setSelected] = useState(null)
+  const [select, setSelect] = useState(false)
+  console.log(selected);
 
   return (
 
@@ -87,17 +90,25 @@ const refetch = () => {
         
 
       </View>
-      
-      <FlatList 
-    data={data}
-    keyExtractor={(item) => item._id}
-    renderItem={({ item }) => (
-        <View>
-            <Text>{item.cartItem.title}</Text>
-            <Text>Quantity: {item.quantity}</Text>
-        </View>
-    )}
-/>
+      {loading ? (<ActivityIndicator size={18} />) : (
+        
+        <FlatList 
+        data={data}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+            <View>
+            <CartTile item={item} onPress={() => {
+              setSelect(!select), setSelected(item)
+            }}
+              select={select} />
+            
+
+            
+            </View>
+        )}
+    />
+      )}
+
  
       </SafeAreaView>
 
