@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ActivityIndicator,   } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, Button,   } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { FlatList } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -103,12 +103,16 @@ const refetch = () => {
               select={select} />
             
 
-            
+
             </View>
         )}
     />
       )}
-
+      {select === false ? (<View></View>) : (<Button
+        title='checkout'
+        isValid={select}
+        onPress={() => {}}
+      />)}
  
       </SafeAreaView>
 
