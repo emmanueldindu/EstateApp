@@ -147,6 +147,10 @@ const ProductDetails = ({ navigation }) => {
         }
     }
 
+  const createheckout = async () => {
+      const id = await AsyncStorage.getItem
+    }
+
    
   return (
     <SafeAreaView>
