@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
     import { useRoute } from "@react-navigation/native";
@@ -14,7 +14,8 @@ const ProductDetails = ({ navigation }) => {
   const { item } = route.params;
   const [count, setCount] = useState(1);
     const [isLoggedIn, setIsLoggedin] = useState(false);
-    const [favorites, setFavorites] = useState(false);
+  const [favorites, setFavorites] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState(false);
   const increment = () => {
     setCount(count + 1);
   };
@@ -97,12 +98,48 @@ const ProductDetails = ({ navigation }) => {
         addToFavorites();
 
     }
-    };
+  };
+  
+  const createheckout = async () => {
+    const id = await AsyncStorage.getItem('id')
+    const response = await fetch('https://stripe-production-ca55.up.railway.app/stripe/create-checkout-session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: JSON.parse(id),
+        cartItem: [
+          {
+            name: item.name,
+            id: item._id,
+            price: item.price,
+            cartQuantity: count,
+          }
+        ]
+      })
+
+    });
+
+    const { url } = await response.json()
+    setPaymentUrl(url)
+  }
+
+  const onNavigationStateChange = (webViewState) => {
+    const { url } = webViewState;
+
+    if (url && url.include('checkout-success')) {
+      
+    } else if (url && url.include('cancel')) {
+
+    }
+  }
+  
   const handleBuy = () => {
     if (isLoggedIn === false) {
       navigation.navigate("Login");
     } else {
-        console.log("pressed");
+      createheckout();
         // AddToCart(item._id, count)
     }
   };
@@ -147,9 +184,7 @@ const ProductDetails = ({ navigation }) => {
         }
     }
 
-  const createheckout = async () => {
-      const id = await AsyncStorage.getItem
-    }
+
 
    
   return (
