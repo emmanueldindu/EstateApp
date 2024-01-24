@@ -46,13 +46,13 @@ const Home = () => {
           <Text className="font-bold" >{ userData ? userData.location : "Lagos Nigeria" }</Text>
 
           <View className=" items-end">
-            <View className="absolute  bottom-4 w-5 h-5 rounded-3xl items-center bg-blue-300 justify-center z-[999]"  >
+            {/* <View className="absolute  bottom-4 w-5 h-5 rounded-3xl items-center bg-blue-300 justify-center z-[999]"  >
               <Text className="font-medium   text-xs my-auto relative text-white">
-              8  
+                
 
               </Text>
               
-            </View>
+            </View> */}
             <TouchableOpacity>
 
             <Ionicons name='cart-outline' size={24}/>

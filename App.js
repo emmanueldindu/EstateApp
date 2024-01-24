@@ -12,6 +12,7 @@ import ProductDetails from './screens/ProductDetails';
 import NewRivals from './screens/NewRivals';
 import Login from './screens/Login';
 import Favourite from './screens/Favourite';
+import Toast from 'react-native-toast-message';
 import Rented from './screens/Rented';
 import Register from './screens/Register';
 const Stack = createNativeStackNavigator()
@@ -119,6 +120,8 @@ export default function App() {
 
         </Stack.Screen>
       </Stack.Navigator>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+
    </NavigationContainer>
   );
 }
