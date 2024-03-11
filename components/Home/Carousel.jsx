@@ -17,6 +17,7 @@ const Carousel = () => {
       toilet: 2,
       favourite: true,
     },
+    
 
     {
       name: "Faulker Ave.",
