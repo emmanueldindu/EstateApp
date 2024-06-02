@@ -66,7 +66,7 @@ const deleteFavorites = async (product) => {
 };
   return (
     <View className='relative'>
-    <SafeAreaView className='mt-4 mx-3'>
+    <SafeAreaView className='mt-4 mx-3 h-full'>
       <View className="flex-row items-center w-full fixed justify-start mb-5">
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons

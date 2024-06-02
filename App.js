@@ -15,7 +15,9 @@ import Favourite from './screens/Favourite';
 import Toast from 'react-native-toast-message';
 import Rented from './screens/Rented';
 import Register from './screens/Register';
+import { LogBox } from 'react-native';
 const Stack = createNativeStackNavigator()
+LogBox.ignoreAllLogs();
 export default function App() {
 
 
@@ -120,7 +122,7 @@ export default function App() {
 
         </Stack.Screen>
       </Stack.Navigator>
-      <Toast ref={(ref) => Toast.setRef(ref)} />
+      <Toast  />
 
    </NavigationContainer>
   );

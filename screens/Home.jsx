@@ -1,13 +1,14 @@
-import { Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { Text, View, TouchableOpacity} from 'react-native'
+import React, { useState, useEffect, useRef} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Fontisto, Ionicons } from '@expo/vector-icons'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { ScrollView,  } from 'react-native-gesture-handler'
 import Find from '../components/Home/Find'
 import Carousel from '../components/Home/Carousel'
 import Heading from '../components/Home/Heading'
 import ProductRow from '../components/Products/ProductRow'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Modalize } from 'react-native-modalize';
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
@@ -36,6 +37,12 @@ const Home = () => {
 
     }
   }
+
+  const modalizeRef = useRef(null);
+
+  const onOpen = () => {
+    modalizeRef.current?.open();
+  };
   return (
     <SafeAreaView>
       
@@ -55,7 +62,7 @@ const Home = () => {
             </View> */}
             <TouchableOpacity>
 
-            <Ionicons name='cart-outline' size={24}/>
+            <Ionicons name='cart-outline' onPress={onOpen} size={24}/>
             </TouchableOpacity>
 
           </View>
@@ -67,10 +74,17 @@ const Home = () => {
           <Carousel />
           <Heading />
           <ProductRow />
-
+       
         </ScrollView>
 
       </View>
+      <Modalize ref={modalizeRef}  snapPoint={500}>
+        {/* Modal content */}
+        <View>
+          <Text>Your Modal Content</Text>
+        </View>
+      </Modalize>
+
     </SafeAreaView>
   )
 }
