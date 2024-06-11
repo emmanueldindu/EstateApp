@@ -62,7 +62,7 @@ const Home = () => {
             </View> */}
             <TouchableOpacity>
 
-            <Ionicons name='cart-outline' onPress={onOpen} size={24}/>
+            <Ionicons name='cart-outline' size={24}/>
             </TouchableOpacity>
 
           </View>

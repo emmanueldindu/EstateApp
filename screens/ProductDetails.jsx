@@ -171,6 +171,10 @@ const ProductDetails = ({ navigation }) => {
     }
   };
 
+  const handleBook = () => {
+    showToast('Booked succesfully')
+  }
+
 
     const checkFavorites = async () => {
         const id = await AsyncStorage.getItem('id');
@@ -328,7 +332,7 @@ onNavigationStateChange={onNavigationStateChange}
           </View>
   
           <View className="flex pl-4 pr-4  pb-2 flex-row justify-between bg-white">
-            <TouchableOpacity onPress={() => handleBuy()}>
+            <TouchableOpacity onPress={() => handleBook()}>
               <View className="bg-black h-[40px] items-center w-[220px] rounded-2xl ">
                 <Text className="text-[#fff] font-bold text-md p-2">
                   {" "}

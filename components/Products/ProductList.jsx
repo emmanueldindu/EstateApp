@@ -44,7 +44,7 @@ const ProductList = () => {
           
                 {loading ? (
                     // <View className="my-auto">
-        <ActivityIndicator size={23} color='red' className="my-auto top-20" /> 
+        <ActivityIndicator size={23} color='gray' className="my-auto mx-auto top-20" /> 
         ) : (
           data.map((item, index) => (
             <TouchableOpacity
